@@ -158,10 +158,11 @@ pub async fn handle_attack(ctx: &Context, command: &CommandInteraction) {
         let mut s = format!("[{}, {}] = {}", result.base_rolls.0, result.base_rolls.1, 
             result.base_rolls.0 + result.base_rolls.1);
         s.push_str(" 💥 → ");
-        for (i, exp) in result.explosions.iter().enumerate() {
+        for (i, (exp_d1, exp_d2)) in result.explosions.iter().enumerate() {
             if i > 0 { s.push_str(" → "); }
-            s.push_str(&format!("[{}]", exp));
-            if *exp >= 19 { s.push_str(" 💥"); }
+            let exp_sum = exp_d1 + exp_d2;
+            s.push_str(&format!("[{}, {}] = {}", exp_d1, exp_d2, exp_sum));
+            if exp_sum >= 19 { s.push_str(" 💥"); }
         }
         s.push_str(&format!(" = {}", result.raw_total));
         s

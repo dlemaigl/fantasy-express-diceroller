@@ -11,8 +11,8 @@ use rand::Rng;
 pub struct DiceResult {
     /// The two initial d10 rolls
     pub base_rolls: (u8, u8),
-    /// Chain of explosion rolls (if any)
-    pub explosions: Vec<u8>,
+    /// Chain of explosion rolls (if any) - each is (d1, d2)
+    pub explosions: Vec<(u8, u8)>,
     /// Raw total before modifiers
     pub raw_total: i32,
     /// Whether this is a fumble (unmodified 2)
@@ -53,10 +53,12 @@ pub fn roll_2d10_open() -> DiceResult {
     if base_sum >= 19 {
         let mut last_roll = base_sum;
         while last_roll >= 19 {
-            let explosion = roll_d10() + roll_d10();
-            explosions.push(explosion);
-            total += explosion as i32;
-            last_roll = explosion;
+            let exp_d1 = roll_d10();
+            let exp_d2 = roll_d10();
+            let explosion_sum = exp_d1 + exp_d2;
+            explosions.push((exp_d1, exp_d2));
+            total += explosion_sum as i32;
+            last_roll = explosion_sum;
         }
     }
 
@@ -97,12 +99,13 @@ pub fn format_roll(result: &DiceResult, modifier: Option<i32>) -> String {
 
     if !result.explosions.is_empty() {
         output.push_str(" 💥 → ");
-        for (i, exp) in result.explosions.iter().enumerate() {
+        for (i, (exp_d1, exp_d2)) in result.explosions.iter().enumerate() {
             if i > 0 {
                 output.push_str(" → ");
             }
-            output.push_str(&format!("[{}]", exp));
-            if *exp >= 19 {
+            let exp_sum = exp_d1 + exp_d2;
+            output.push_str(&format!("[{}, {}] = {}", exp_d1, exp_d2, exp_sum));
+            if exp_sum >= 19 {
                 output.push_str(" 💥");
             }
         }
@@ -191,14 +194,14 @@ mod tests {
     fn test_format_explosion() {
         let result = DiceResult {
             base_rolls: (10, 10),
-            explosions: vec![15],
+            explosions: vec![(8, 7)],  // [8, 7] = 15
             raw_total: 35,
             is_fumble: false,
             exploded: true,
         };
         let formatted = format_roll(&result, None);
         assert!(formatted.contains("💥"));
-        assert!(formatted.contains("[15]"));
+        assert!(formatted.contains("[8, 7] = 15"));
         assert!(formatted.contains("= 35"));
     }
 }
