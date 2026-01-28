@@ -18,6 +18,7 @@ pub struct DiceResult {
     /// Whether this is a fumble (unmodified 2)
     pub is_fumble: bool,
     /// Whether an explosion occurred
+    #[allow(dead_code)]
     pub exploded: bool,
 }
 
@@ -75,6 +76,16 @@ pub fn roll_with_modifier(modifier: i32) -> (DiceResult, i32) {
     let result = roll_2d10_open();
     let final_total = result.raw_total + modifier;
     (result, final_total)
+}
+
+/// Roll 2d10 WITHOUT open-ended explosions (for initiative)
+///
+/// Unlike combat and skill rolls, initiative uses standard 2d10
+/// without the explosion mechanic on 19-20.
+pub fn roll_2d10_closed() -> (u8, u8, i32) {
+    let d1 = roll_d10();
+    let d2 = roll_d10();
+    (d1, d2, (d1 + d2) as i32)
 }
 
 /// Format a dice result for display

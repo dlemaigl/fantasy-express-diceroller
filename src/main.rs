@@ -51,6 +51,15 @@ impl EventHandler for Handler {
             match command.data.name.as_str() {
                 "roll" => commands::handle_roll(&ctx, &command).await,
                 "skill" => commands::handle_skill(&ctx, &command).await,
+                "initiative" => commands::handle_initiative(&ctx, &command).await,
+                "attack" => commands::handle_attack(&ctx, &command).await,
+                "save" => commands::handle_save(&ctx, &command).await,
+                "cast" => commands::handle_cast(&ctx, &command).await,
+                "fumble" => commands::handle_fumble(&ctx, &command).await,
+                "spellfumble" => commands::handle_spellfumble(&ctx, &command).await,
+                "help" => commands::handle_help(&ctx, &command).await,
+                "difficulty" => commands::handle_difficulty(&ctx, &command).await,
+                "opposed" => commands::handle_opposed(&ctx, &command).await,
                 _ => {}
             }
         }

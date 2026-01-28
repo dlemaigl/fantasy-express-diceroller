@@ -20,6 +20,7 @@ pub enum FeatResult {
 
 impl FeatResult {
     /// Get the number of success levels
+    #[allow(dead_code)]
     pub fn success_levels(&self) -> u8 {
         match self {
             FeatResult::CriticalFailure => 0,
@@ -31,6 +32,7 @@ impl FeatResult {
     }
 
     /// Check if this is any kind of success
+    #[allow(dead_code)]
     pub fn is_success(&self) -> bool {
         matches!(
             self,

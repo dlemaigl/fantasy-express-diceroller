@@ -5,5 +5,5 @@
 pub mod feat;
 pub mod roll;
 
-pub use feat::{resolve_feat, FeatResult};
-pub use roll::{roll_2d10_open, roll_with_modifier, DiceResult};
+pub use feat::resolve_feat;
+pub use roll::{roll_2d10_closed, roll_2d10_open, roll_with_modifier};
