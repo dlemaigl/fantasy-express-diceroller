@@ -498,6 +498,7 @@ pub fn register_commands() -> Vec<CreateCommand> {
                     "Optional bonus/penalty to add (e.g. +15 for attack bonus)",
                 )
                 .required(false)
+                .min_int_value(-100)
                 .max_int_value(100),
             ),
         CreateCommand::new("skill")
