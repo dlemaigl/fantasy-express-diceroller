@@ -21,3 +21,7 @@ Thumbs.db
 
 # Deployment
 fantasy-express-bot.service
+
+# Project Specific
+docs/
+internal/
