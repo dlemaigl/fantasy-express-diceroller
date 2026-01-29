@@ -31,10 +31,10 @@ A Discord dice roller bot for **Fantasy Express RPG** built in Rust using the Se
 ```
 🎲 Skill Roll
 ━━━━━━━━━━━━━━
-Dice: [8, 12] = 20 → [19] 💥 = 39
+Dice: [10, 9] = 19 💥 → [8, 6] = 14 = 33
 Bonus: +15 | Difficulty: -6
 ━━━━━━━━━━━━━━
-✅ SUCCESS (3 SL) (Total: 48)
+✅ SUCCESS (3 SL) (Total: 42)
 Task accomplished! Spend Success Levels on Boons.
 ```
 
