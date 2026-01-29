@@ -2,14 +2,23 @@
 
 A Discord dice roller bot for **Fantasy Express RPG** built in Rust using the Serenity framework.
 
-## Features
+---
+
+## 🚀 For Users: Using the Bot
+
+### Add the Bot to Your Server
+
+You can invite the bot to your Discord server using the following link:
+👉 **[Invite Fantasy Express Bot](https://discord.com/oauth2/authorize?client_id=1466046361043468433&permissions=19456&integration_type=0&scope=bot+applications.commands)**
+
+### Features
 
 - **2d10 Open-Ended Rolls**: Dice explode on 19-20 (chain explosions supported)
 - **Fumble Detection**: Automatic critical failure on unmodified 2
 - **FEAT Table Resolution**: Full success level calculation (0-5 SL)
 - **Slash Commands**: Modern Discord interaction support
 
-## Commands
+### Commands Reference
 
 | Command | Description |
 |---------|-------------|
@@ -38,13 +47,17 @@ Bonus: +15 | Difficulty: -6
 Task accomplished! Spend Success Levels on Boons.
 ```
 
-## Installation
+---
+
+## 🛠️ For Developers: Technical & Self-Hosting
+
+If you want to host the bot yourself or contribute to the development, follow these instructions.
 
 ### Prerequisites
 - [Rust](https://rustup.rs/) (1.70+)
 - A Discord Bot Token
 
-### Setup
+### Installation & Setup
 
 1. **Clone the repository**
    ```bash
@@ -63,19 +76,19 @@ Task accomplished! Spend Success Levels on Boons.
    cargo run
    ```
 
-### Discord Bot Setup
+### Discord Bot Configuration
 
+If you are hosting your own instance:
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
-2. Create a new application
-3. Go to **Bot** section and create a bot
-4. Copy the token to your `.env` file
-5. Go to **OAuth2 > URL Generator**
-6. Select scopes: `bot`, `applications.commands`
-7. Use the generated URL to invite the bot to your server
+2. Create a new application and add a **Bot**
+3. Copy the **Token** to your `.env` file
+4. Generate an invite link in **OAuth2 > URL Generator**:
+   - **Scopes**: `bot`, `applications.commands`
+   - **Bot Permissions**: `Send Messages`, `View Channels`
 
-> **Tip**: Set `TEST_GUILD_ID` in `.env` for instant command registration during development.
+> **Note**: This bot uses Slash Commands, so the "Message Content" intent is NOT required.
 
-## Development
+### Development Commands
 
 ```bash
 # Run tests
@@ -85,46 +98,28 @@ cargo test
 cargo build --release
 ```
 
-## Deployment (Raspberry Pi)
+### Deployment (Raspberry Pi / ARM64)
 
-To deploy the bot on a Raspberry Pi (or other ARM64 Linux devices):
-
-### 1. Cross-compile for ARM64
 We use `cross` to compile for the Raspberry Pi architecture.
 
-```bash
-# Install cross if you haven't already
-cargo install cross
+1. **Cross-compile**:
+   ```bash
+   cargo install cross
+   cross build --target aarch64-unknown-linux-gnu --release
+   ```
 
-# Build for ARM64
-cross build --target aarch64-unknown-linux-gnu --release
-```
+2. **Transfer files**:
+   ```bash
+   scp target/aarch64-unknown-linux-gnu/release/fantasy-express-bot .env pi@<PI_IP>:~/code/
+   ```
 
-### 2. Transfer files
-Copy the executable and your environment file to the Raspberry Pi:
-
-```bash
-scp target/aarch64-unknown-linux-gnu/release/fantasy-express-bot .env pi@<PI_IP>:~/code/
-```
-
-### 3. Setup Systemd Service
-To ensure the bot runs in the background and restarts automatically:
-
-1. Copy the example service file:
+3. **Setup Systemd Service**:
+   Copy and enable the provided service file to keep the bot running:
    ```bash
    cp fantasy-express-bot.service.example fantasy-express-bot.service
-   ```
-2. Edit `fantasy-express-bot.service` if your paths or user are different.
-3. Copy it to the Pi:
-   ```bash
-   scp fantasy-express-bot.service pi@<PI_IP>:~/code/
-   ```
-4. On the Pi, install and start the service:
-   ```bash
-   sudo mv ~/code/fantasy-express-bot.service /etc/systemd/system/
-   sudo systemctl daemon-reload
-   sudo systemctl enable fantasy-express-bot
-   sudo systemctl start fantasy-express-bot
+   # Edit paths in the service file as needed...
+   sudo cp fantasy-express-bot.service /etc/systemd/system/
+   sudo systemctl enable --now fantasy-express-bot
    ```
 
 ## Rules Reference
