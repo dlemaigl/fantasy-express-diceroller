@@ -1,0 +1,13 @@
+[package]
+name = "fantasy-express-bot"
+version = "0.1.0"
+edition = "2021"
+description = "Discord dice roller bot for Fantasy Express RPG"
+
+[dependencies]
+serenity = { version = "0.12", features = ["client", "gateway", "model", "framework"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+rand = "0.8"
+dotenv = "0.15"
+
+[dev-dependencies]
