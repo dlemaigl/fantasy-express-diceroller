@@ -327,9 +327,9 @@ pub async fn handle_fumble(ctx: &Context, command: &CommandInteraction) {
     let fumble_result = match final_total {
         t if t <= 15 => "📋 Make Assessment Roll next Upkeep",
         16..=20 => "📋 Assessment + choose 1: Drop weapon OR Take 1 SL critical to self",
-        21..=25 => "📋 Assessment + choose 2: Drop, 2 SL critical to self, Hit ally",
-        26..=30 => "📋 Assessment + choose 2: Drop, 2 SL critical, Hit ally, Weapon breaks",
-        _ => "💀 Assessment + choose 2: Drop, 3 SL critical, Hit ally, Weapon breaks",
+        21..=24 => "📋 Assessment + choose 2: Drop, 2 SL critical to self, Hit ally",
+        25..=29 => "📋 Assessment + choose 2: Drop, 2 SL critical, Hit ally, Weapon breaks",
+        t if t >= 30 => "💀 Assessment + choose 2: Drop, 3 SL critical, Hit ally, Weapon breaks",
     };
 
     let response = format!(
