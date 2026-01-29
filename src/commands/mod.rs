@@ -173,7 +173,7 @@ pub async fn handle_attack(ctx: &Context, command: &CommandInteraction) {
     // Calculate damage if hit (20+)
     let damage_info = if final_total >= 20 && damage_rating > 0 {
         let points_over_20 = (final_total - 20).max(0);
-        let max_bonus = damage_rating * 2; // Cap at 3x DR total
+        let max_bonus = damage_rating * 2; // Cap bonus at 2x DR (for 3x DR total)
         let hit_damage = damage_rating + points_over_20.min(max_bonus);
         format!("\n💥 **Damage: {}** (DR {} + {} bonus)", hit_damage, damage_rating, points_over_20.min(max_bonus))
     } else if final_total >= 20 {
