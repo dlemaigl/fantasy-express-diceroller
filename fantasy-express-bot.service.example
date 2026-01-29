@@ -1,0 +1,14 @@
+[Unit]
+Description=Fantasy Express Discord Bot
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/code
+ExecStart=/home/pi/code/fantasy-express-bot
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=common.target

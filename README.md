@@ -85,6 +85,48 @@ cargo test
 cargo build --release
 ```
 
+## Deployment (Raspberry Pi)
+
+To deploy the bot on a Raspberry Pi (or other ARM64 Linux devices):
+
+### 1. Cross-compile for ARM64
+We use `cross` to compile for the Raspberry Pi architecture.
+
+```bash
+# Install cross if you haven't already
+cargo install cross
+
+# Build for ARM64
+cross build --target aarch64-unknown-linux-gnu --release
+```
+
+### 2. Transfer files
+Copy the executable and your environment file to the Raspberry Pi:
+
+```bash
+scp target/aarch64-unknown-linux-gnu/release/fantasy-express-bot .env pi@<PI_IP>:~/code/
+```
+
+### 3. Setup Systemd Service
+To ensure the bot runs in the background and restarts automatically:
+
+1. Copy the example service file:
+   ```bash
+   cp fantasy-express-bot.service.example fantasy-express-bot.service
+   ```
+2. Edit `fantasy-express-bot.service` if your paths or user are different.
+3. Copy it to the Pi:
+   ```bash
+   scp fantasy-express-bot.service pi@<PI_IP>:~/code/
+   ```
+4. On the Pi, install and start the service:
+   ```bash
+   sudo mv ~/code/fantasy-express-bot.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable fantasy-express-bot
+   sudo systemctl start fantasy-express-bot
+   ```
+
 ## Rules Reference
 
 See [RULES_REFERENCE.md](RULES_REFERENCE.md) for the complete Fantasy Express RPG dice mechanics.
