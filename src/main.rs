@@ -34,6 +34,11 @@ impl EventHandler for Handler {
                 } else {
                     println!("✅ Registered commands to test guild {}", id);
                 }
+            } else {
+                eprintln!(
+                    "Warning: TEST_GUILD_ID='{}' is not a valid u64, skipping test guild command registration.",
+                    guild_id
+                );
             }
         } else {
             // Register globally (may take up to an hour to propagate)

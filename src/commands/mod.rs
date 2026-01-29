@@ -293,20 +293,19 @@ pub async fn handle_cast(ctx: &Context, command: &CommandInteraction) {
 pub async fn handle_fumble(ctx: &Context, command: &CommandInteraction) {
     let mut weapon_mod: i32 = 0;
     let mut skill_ranks: i32 = 0;
-    let mut weapon_type = String::from("Brawl/Hand");
+    let mut weapon_type_display = String::from("Brawl/Hand");
 
     for option in &command.data.options {
         match option.name.as_str() {
             "weapon_type" => {
                 if let Some(val) = option.value.as_str() {
-                    weapon_type = val.to_string();
-                    weapon_mod = match val {
-                        "brawl" => 0,
-                        "short_edged" => 2,
-                        "long_edged" => 4,
-                        "two_handed" => 6,
-                        "polearm" => 10,
-                        _ => 0,
+                    (weapon_type_display, weapon_mod) = match val {
+                        "brawl" => ("Brawl/Hand".to_string(), 0),
+                        "short_edged" => ("Short edged/Long impact".to_string(), 2),
+                        "long_edged" => ("Long edged".to_string(), 4),
+                        "two_handed" => ("Two-handed/Chain".to_string(), 6),
+                        "polearm" => ("Polearm/Net/Whip".to_string(), 10),
+                        _ => ("Unknown".to_string(), 0),
                     };
                 }
             }
@@ -329,12 +328,12 @@ pub async fn handle_fumble(ctx: &Context, command: &CommandInteraction) {
         16..=20 => "📋 Assessment + choose 1: Drop weapon OR Take 1 SL critical to self",
         21..=24 => "📋 Assessment + choose 2: Drop, 2 SL critical to self, Hit ally",
         25..=29 => "📋 Assessment + choose 2: Drop, 2 SL critical, Hit ally, Weapon breaks",
-        t if t >= 30 => "💀 Assessment + choose 2: Drop, 3 SL critical, Hit ally, Weapon breaks",
+        _ => "💀 Assessment + choose 2: Drop, 3 SL critical, Hit ally, Weapon breaks",
     };
 
     let response = format!(
         "⚠️ **Weapon Fumble**\n━━━━━━━━━━━━━━\nDice: [{}, {}] = {}\nWeapon: {} ({:+}) | Skill ranks: {} ({:+})\n━━━━━━━━━━━━━━\n**Total: {}**\n{}",
-        d1, d2, dice_total, weapon_type, weapon_mod, skill_ranks, -rank_reduction, final_total, fumble_result
+        d1, d2, dice_total, weapon_type_display, weapon_mod, skill_ranks, -rank_reduction, final_total, fumble_result
     );
 
     send_response(ctx, command, &response).await;
@@ -498,7 +497,6 @@ pub fn register_commands() -> Vec<CreateCommand> {
                     "Optional bonus/penalty to add (e.g. +15 for attack bonus)",
                 )
                 .required(false)
-                .min_int_value(-100)
                 .max_int_value(100),
             ),
         CreateCommand::new("skill")
@@ -510,7 +508,6 @@ pub fn register_commands() -> Vec<CreateCommand> {
                     "Your total skill bonus (stat + ranks + modifiers)",
                 )
                 .required(true)
-                .min_int_value(0)
                 .max_int_value(100),
             )
             .add_option(

@@ -50,15 +50,18 @@ pub fn roll_2d10_open() -> DiceResult {
     let mut total = base_sum as i32;
 
     // Check for explosion (19 or 20)
+    // Safety limit of 100 iterations to prevent theoretical infinite loop
     if base_sum >= 19 {
         let mut last_roll = base_sum;
-        while last_roll >= 19 {
+        let mut explosion_count = 0;
+        while last_roll >= 19 && explosion_count < 100 {
             let exp_d1 = roll_d10();
             let exp_d2 = roll_d10();
             let explosion_sum = exp_d1 + exp_d2;
             explosions.push((exp_d1, exp_d2));
             total += explosion_sum as i32;
             last_roll = explosion_sum;
+            explosion_count += 1;
         }
     }
 
